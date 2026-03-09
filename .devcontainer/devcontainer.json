@@ -1,15 +1,8 @@
 {
     "name": "Java Spring Boot (Gradle | WebFlux | Security | Data)",
-    "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye",
-    "features": {
-        "ghcr.io/devcontainers/features/java:1": {
-            "version": "21",
-            "installMaven": "false",
-            "installGradle": "true",
-            "gradleVersion": "8.12"
-        },
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-        "ghcr.io/devcontainers/features/github-cli:1": {}
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
     },
     "customizations": {
         "vscode": {
@@ -45,6 +38,9 @@
             ]
         }
     },
+    "runArgs": [
+        "--init"
+    ],
     "forwardPorts": [
         8080,
         8443,
@@ -85,6 +81,6 @@
         }
     },
     "postCreateCommand": "bash .devcontainer/postCreate.sh",
-    "postStartCommand": "echo '🚀 Ambiente listo! Ejecuta: ./gradlew bootRun'",
+    "postStartCommand": "echo '🚀 Listo! Ejecuta: ./gradlew bootRun'",
     "remoteUser": "vscode"
 }
