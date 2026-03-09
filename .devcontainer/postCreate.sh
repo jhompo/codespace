@@ -3,11 +3,14 @@ set -e
 
 echo "🔧 Configurando ambiente de desarrollo Java Spring Boot..."
 
-# ─── Permisos de los wrappers de Gradle ───────────────────────────────────────
-if [ -f "./gradlew" ]; then
-    chmod +x ./gradlew
-    echo "✅ gradlew: permisos asignados"
+# ─── Gradle Wrapper ───────────────────────────────────────────────────────────
+if [ ! -f "./gradlew" ]; then
+    echo "⚙️  gradlew no encontrado, generando con: gradle wrapper..."
+    gradle wrapper --gradle-version 8.12
+    echo "✅ gradlew generado"
 fi
+chmod +x ./gradlew
+echo "✅ gradlew: permisos asignados"
 
 # ─── Verificar versiones ───────────────────────────────────────────────────────
 echo ""
