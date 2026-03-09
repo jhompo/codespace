@@ -1,0 +1,2 @@
+// Coloca aquí los tests de integración reactivos.
+// Usa @SpringBootTest + @ActiveProfiles("test") + StepVerifier.

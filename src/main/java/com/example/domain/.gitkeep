@@ -1,0 +1,5 @@
+// Paquetes de la arquitectura por capas.
+// Crea aquí tus clases de dominio:
+// - Entidades R2DBC:  @Table, @Id, @Column
+// - Entidades Mongo:  @Document, @Id, @Field
+// - Records (DTOs):   record UserDto(String id, String name) {}

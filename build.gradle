@@ -1,0 +1,98 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+// ─── Repositorios ─────────────────────────────────────────────────────────────
+repositories {
+    mavenCentral()
+}
+
+// ─── Configuración de Lombok ──────────────────────────────────────────────────
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+// ─── Dependencias ─────────────────────────────────────────────────────────────
+dependencies {
+
+    // ── Spring Boot Core ──────────────────────────────────────────────────────
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'          // WebFlux (Reactivo)
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'          // Health / Metrics
+    implementation 'org.springframework.boot:spring-boot-starter-validation'        // Bean Validation
+
+    // ── Spring Security ───────────────────────────────────────────────────────
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'       // JWT
+
+    // ── Spring Data (reactivo) ────────────────────────────────────────────────
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'        // R2DBC (SQL reactivo)
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive' // MongoDB reactivo
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'   // Redis reactivo
+
+    // ── Drivers R2DBC ─────────────────────────────────────────────────────────
+    runtimeOnly 'io.r2dbc:r2dbc-postgresql'                                         // PostgreSQL
+    runtimeOnly 'io.r2dbc:r2dbc-h2'                                                 // H2 (desarrollo)
+    runtimeOnly 'org.postgresql:postgresql'                                          // JDBC para migraciones
+
+    // ── Migraciones de BD ─────────────────────────────────────────────────────
+    implementation 'org.flywaydb:flyway-core'
+
+    // ── Mapeo y Utilidades ────────────────────────────────────────────────────
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
+    // ── Lombok ────────────────────────────────────────────────────────────────
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // ── Serialización ─────────────────────────────────────────────────────────
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    // ── Observabilidad ────────────────────────────────────────────────────────
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+    // ── Documentación API ─────────────────────────────────────────────────────
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.3'
+
+    // ── Tests ─────────────────────────────────────────────────────────────────
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'io.r2dbc:r2dbc-h2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// ─── Configuración de Tests ───────────────────────────────────────────────────
+tasks.named('test') {
+    useJUnitPlatform()
+    jvmArgs '-Xmx512m'
+}
+
+// ─── Tarea de info útil ───────────────────────────────────────────────────────
+tasks.register('projectInfo') {
+    group = 'help'
+    description = 'Muestra información del proyecto'
+    doLast {
+        println "Proyecto  : ${project.name}"
+        println "Versión   : ${project.version}"
+        println "Java      : ${JavaVersion.current()}"
+        println "Spring    : ${dependencyManagement.importedProperties['spring-boot.version']}"
+    }
+}
