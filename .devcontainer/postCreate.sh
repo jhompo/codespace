@@ -3,6 +3,31 @@ set -e
 
 echo "🔧 Configurando ambiente de desarrollo Java Spring Boot..."
 
+# ─── JAVA_HOME ────────────────────────────────────────────────────────────────
+# Inicializa SDKMAN si está disponible (imagen mcr.microsoft.com/devcontainers/java)
+if [ -f "/usr/local/sdkman/bin/sdkman-init.sh" ]; then
+    source /usr/local/sdkman/bin/sdkman-init.sh
+    echo "✅ SDKMAN iniciado"
+fi
+
+# Exporta JAVA_HOME si no está definido
+if [ -z "$JAVA_HOME" ]; then
+    DETECTED_JAVA=$(find /usr/local/sdkman/candidates/java /usr/lib/jvm -maxdepth 1 -mindepth 1 -type d 2>/dev/null | head -1)
+    if [ -n "$DETECTED_JAVA" ]; then
+        export JAVA_HOME="$DETECTED_JAVA"
+        export PATH="$JAVA_HOME/bin:$PATH"
+        echo "✅ JAVA_HOME configurado: $JAVA_HOME"
+    fi
+fi
+
+# Persiste JAVA_HOME en .bashrc para sesiones futuras del terminal
+if ! grep -q "sdkman-init" ~/.bashrc 2>/dev/null; then
+    echo '' >> ~/.bashrc
+    echo '# Java / SDKMAN' >> ~/.bashrc
+    echo '[ -f "/usr/local/sdkman/bin/sdkman-init.sh" ] && source /usr/local/sdkman/bin/sdkman-init.sh' >> ~/.bashrc
+    echo "✅ JAVA_HOME añadido a ~/.bashrc"
+fi
+
 # ─── Gradle Wrapper ───────────────────────────────────────────────────────────
 if [ ! -f "./gradlew" ]; then
     echo "⚙️  gradlew no encontrado, generando con: gradle wrapper..."
@@ -18,7 +43,7 @@ echo "────────────────────────�
 echo "  📦 Versiones instaladas"
 echo "──────────────────────────────────────────────"
 java -version
-gradle --version | head -4
+./gradlew --version | head -4
 
 # ─── Configurar Git ───────────────────────────────────────────────────────────
 git config --global core.autocrlf input
