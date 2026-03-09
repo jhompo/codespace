@@ -29,10 +29,11 @@ if ! grep -q "sdkman-init" ~/.bashrc 2>/dev/null; then
 fi
 
 # ─── Gradle Wrapper ───────────────────────────────────────────────────────────
-if [ ! -f "./gradlew" ]; then
-    echo "⚙️  gradlew no encontrado, generando con: gradle wrapper..."
+# Genera el wrapper completo (gradlew + JAR) si alguno falta
+if [ ! -f "./gradlew" ] || [ ! -f "./gradle/wrapper/gradle-wrapper.jar" ]; then
+    echo "⚙️  Generando Gradle Wrapper (gradle wrapper --gradle-version 8.12)..."
     gradle wrapper --gradle-version 8.12
-    echo "✅ gradlew generado"
+    echo "✅ Gradle Wrapper generado (gradlew + JAR)"
 fi
 chmod +x ./gradlew
 echo "✅ gradlew: permisos asignados"
