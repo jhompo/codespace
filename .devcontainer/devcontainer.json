@@ -14,6 +14,12 @@
                 "editor.defaultFormatter": "redhat.java",
                 "editor.tabSize": 4,
                 "editor.insertSpaces": true,
+                "editor.suggestOnTriggerCharacters": false,
+                "editor.quickSuggestions": {
+                    "other": false,
+                    "comments": false,
+                    "strings": false
+                },
                 "files.exclude": {
                     "**/.gradle": true,
                     "**/build": false
