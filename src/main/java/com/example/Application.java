@@ -29,30 +29,36 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        System.out.println("Inicio del Ejercicio.");
 
-        List<TransactionDTO> transactions = List.of(
-                new TransactionDTO("1", -100, "WITHDRAWAL"),
-                new TransactionDTO("2", 200, "DEPOSIT"),
-                new TransactionDTO("3", 50, "WITHDRAWAL"),
-                new TransactionDTO("4", -30, "WITHDRAWAL"));
+        /**
+         * EJERCICIO: PROCESAMIENTO REACTIVO DE TRANSACCIONES BANCARIAS
+         * 
+         * Implementa un flujo reactivo que procese una lista de transacciones bancarias simuladas.
+         * 
+         * Cada transacción estará representada por un objeto:
+         * public class TransactionDTO {
+         *     private String id;
+         *     private double amount;
+         *     private String type; // Ejemplo: "DEPOSIT", "WITHDRAWAL"
+         * }
+         * 
+         * El flujo debe cumplir los siguientes pasos:
+         * 1. A partir de una lista de TransactionDTO, filtrar únicamente las transacciones de tipo "WITHDRAWAL".
+         * 2. Convertir cada monto a su valor absoluto.
+         * 3. Simular una transacción asíncrona, aplicando un retraso de 200 ms por transacción.
+         * 4. Calcular el total acumulado de todos los montos procesados.
+         * 5. Imprimir en consola:
+         *    - Cada transacción procesada.
+         *    - El total acumulado final.
+         * 
+         * Se valorará:
+         * • Correcta aplicación del modelo reactivo (Flux/Mono).
+         * • Código limpio y legible.
+         * • Uso apropiado de operadores de Reactor (filter, map, flatMap, reduce, doOnNext, etc.).
+         */
+        System.out.println("Inicio del MiniReto Tecnico.");
 
-        Flux.fromIterable(transactions)
-                .filter(tx -> "WITHDRAWAL".equalsIgnoreCase(tx.getType()))
-
-                .flatMap(tx -> {
-                    if (tx.getAmount() <= 0) {
-                        System.out.println("⚠️ Transacción " + tx.getId() + " con monto negativo: " + tx.getAmount() );
-                    }
-                    tx.setAmount(Math.abs(tx.getAmount()));
-                    return Mono.just(tx).delayElement(Duration.ofMillis(200));
-                })
-
-                .doOnNext(tx -> System.out.println("Procesada: " + tx.getId() + " - Monto: " + tx.getAmount()))
-                .map(TransactionDTO::getAmount)
-                .reduce(0.0, Double::sum)
-                .doOnNext(total -> System.out.println("Total acumulado: " + total))
-                .subscribe();
+       
     }
 
 }
