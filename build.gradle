@@ -25,6 +25,13 @@ configurations {
     }
 }
 
+// ─── Dependency Management ────────────────────────────────────────────────────
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:3.4.3'
+    }
+}
+
 // ─── Dependencias ─────────────────────────────────────────────────────────────
 dependencies {
 
@@ -44,9 +51,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'   // Redis reactivo
 
     // ── Drivers R2DBC ─────────────────────────────────────────────────────────
-    runtimeOnly 'io.r2dbc:r2dbc-postgresql'                                         // PostgreSQL
-    runtimeOnly 'io.r2dbc:r2dbc-h2'                                                 // H2 (desarrollo)
-    runtimeOnly 'org.postgresql:postgresql'                                          // JDBC para migraciones
+    runtimeOnly 'io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE'                         // PostgreSQL
+    runtimeOnly 'io.r2dbc:r2dbc-h2:1.1.0.RELEASE'                                   // H2 (desarrollo)
+    runtimeOnly 'org.postgresql:postgresql:42.7.2'                                   // JDBC para migraciones
 
     // ── Migraciones de BD ─────────────────────────────────────────────────────
     implementation 'org.flywaydb:flyway-core'
