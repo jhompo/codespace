@@ -87,6 +87,10 @@
             "onAutoForward": "silent"
         }
     },
+    "containerEnv": {
+        "APP_SECURITY_ENABLED": "false",
+        "SPRING_PROFILES_ACTIVE": "dev"
+    },
     "postCreateCommand": "bash .devcontainer/postCreate.sh",
     "postStartCommand": "echo '🚀 Listo! Ejecuta: ./gradlew bootRun'",
     "remoteUser": "vscode"
